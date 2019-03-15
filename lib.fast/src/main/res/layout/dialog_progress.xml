@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?><!--进度条-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:ProgressWheel="http://schemas.android.com/apk/res-auto"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="120dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@drawable/frame_black_progress_dialog"-->
+        <!--android:gravity="center">-->
+
+        <!--<com.chanxa.template.ui.widget.ProgressWheel-->
+            <!--android:id="@+id/toast_progress"-->
+            <!--android:layout_width="80dp"-->
+            <!--android:layout_height="80dp"-->
+            <!--android:visibility="gone"-->
+            <!--ProgressWheel:wheel_barColor="#4159ce"-->
+            <!--ProgressWheel:wheel_progressIndeterminate="true"-->
+            <!--ProgressWheel:wheel_rimColor="#ffffff"/>-->
+
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/frame_black_progress_dialog"
+            android:gravity="center">
+
+            <ProgressBar
+                android:id="@+id/ali_header_progressbar"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/ali_header_text"
+                android:layout_toStartOf="@+id/ali_header_text"
+                android:indeterminateDrawable="@drawable/progress_small"
+                android:indeterminateDuration="1000"/>
+
+        </LinearLayout>
+
+
+    <!--</LinearLayout>-->
+
+</LinearLayout>

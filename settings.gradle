@@ -1,0 +1,11 @@
+include ':app',
+        ':lib.fast',
+        ':PhotoPicker',
+        ':xrecyclerview',
+        ':MPChartLib',
+        ':ncalendar',
+        ':wkvideoplayer',
+        ':mywheelview',
+        ':mydatapicker',
+        ':easyswipemenulibrary'
+

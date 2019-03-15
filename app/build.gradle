@@ -1,0 +1,70 @@
+apply plugin: 'com.android.application'
+//应用 Bugtags 插件，插件只支持 2.1.3 及以下的 ios 版本
+apply plugin: 'com.bugtags.library.plugin'
+
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    defaultConfig {
+        applicationId "projecttemplateforwangzhou.wangzhou.com.projecttemplateforwangzhou"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        ndk {
+            // 设置支持的 SO 库构架，一般而言，取你所有的库支持的构架的`交集`。
+            abiFilters 'armeabi'// 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+bugtags {
+    //自动上传符号表功能配置，如果需要根据 build varint 配置，请参考帮助中心->符号表->Android 符号表->配置自动上传符号表
+    appKey "4a79363bddeb044d4d02c99f07ac4d43"  //这里是你的 appKey
+    appSecret "6e622990ce1154231a4ce54d88bb2079"    //这里是你的 appSecret，管理员在设置页可以查看
+    mappingUploadEnabled true
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //noinspection GradleCompatible
+    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:design:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
+    //MVP 架构搭建
+    implementation project(':lib.fast')
+    // 图片选择和轮播框架 看功能介绍 2.0
+    implementation project(':PhotoPicker')
+    // 列表自带上拉，下拉刷新
+    implementation project(':xrecyclerview')
+    // 强大的图表框架，不管是折线图，曲线图，柱状图任意图,致我踩坑最多的框架
+    implementation project(':MPChartLib')
+    //日历选择器，可以自由选择是否显示农历，我给隐藏了。
+    implementation project(':ncalendar')
+    // 网络视频播放
+    implementation project(':wkvideoplayer')
+
+    implementation project(':mydatapicker')
+    implementation project(':mywheelview')
+    implementation project(':easyswipemenulibrary')
+    //bugtags
+    api 'com.bugtags.library:bugtags-lib:latest.integration'
+    //ButterKnife
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    // 扫描二维码
+    implementation 'com.github.yuzhiqiang1993:zxing:2.1.8'
+    //   蓝牙框架
+    api 'com.inuker.bluetooth:library:1.4.0'
+
+
+}

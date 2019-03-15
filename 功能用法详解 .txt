@@ -1,0 +1,98 @@
+
+
+ Functions // 是一个很关键的工具类，没事可以去里面找找
+
+ //  二维码扫描功能
+
+ //1.0 调用二维码界面
+         Intent intent = new Intent();
+         ZxingConfig config = new ZxingConfig();
+         config.setShowbottomLayout(true);//底部布局（包括闪光灯和相册）
+         config.setPlayBeep(true);//是否播放提示音
+         config.setShake(true);//是否震动
+         config.setShowAlbum(true);//是否显示相册
+         config.setShowFlashLight(false );//是否显示闪光灯
+         intent.putExtra(Constant.INTENT_ZXING_CONFIG, config);
+         changeForResult(CaptureActivity.class,MainActivity.this,intent,REQUEST_CODE_SCAN,false);
+
+         // REQUEST_CODE_SCAN  就是我拿结果的标识符   requestCode == REQUEST_CODE_SCAN  就OK了。
+
+
+
+ // 2.0 权限设置
+                String[] permission ={ Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_WIFI_STATE}; //定位权限
+                PermissionRationale permissionRationale =new PermissionRationale("定位权限",permission);
+                PermissionHelper permissionHelper =new PermissionHelper(this,permissionRationale);
+                permissionHelper.requestPermission();
+
+
+
+ // 3.0 图片设置
+
+     //3.1  选取图片
+             PhotoPicker.builder()
+                .setPhotoCount(9)  //最多选取多少张图片
+                .setShowCamera(true)
+                .setShowGif(true)
+                .setPreviewEnabled(false)
+                .start(this, PhotoPicker.REQUEST_CODE);// 标识符
+
+
+    //3.2 图片轮播显示
+     ArrayList<String> selectedPhotos = ...;
+
+     PhotoPreview.builder()
+    .setPhotos(selectedPhotos)
+    .setCurrentItem(position)     // postion 为图片的下标，首次打开的图片的下标是那一张
+    .setShowDeleteButton(false)
+    .start(MainActivity.this);
+
+
+
+    // 4.0   日历选择器，自由控制是否包含农历
+
+     monthcalendar.setOnMonthCalendarChangedListener(new OnMonthCalendarChangedListener() {
+                @Override
+                public void onMonthCalendarChanged(LocalDate dateTime) {
+                    Log.e("---->",dateTime.toString());
+                }
+            });
+
+     // 5.0 圆形进度条 MusicProgressBar
+      MusicProgressBar 可以拖拽的圆形进度条我把禁止拖动了，要要直接   progress1.setProgress(value); 直接设置值就好了
+
+
+     //  自定义seekbar 横向
+     http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2017/1020/8626.html  //网址
+     github地址：https://github.com/zhou-you/EasySignSeekBar  //githup 代码网址
+
+
+  //6.0  photoview  一个强大imageview  自带缩放效果
+
+  FlycoTabLayout  //   日 月 年 切换那种样式 头部样式等。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

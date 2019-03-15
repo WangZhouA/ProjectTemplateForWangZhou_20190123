@@ -1,0 +1,150 @@
+package espressifdemo.saiyi.com.espressifdemo;
+
+import android.app.Dialog;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.xuhong.xsmartconfiglib.api.xEspTouchTask;
+
+import saiyi.com.mydialogutils.DialogUtils;
+
+public class MainActivity extends AppCompatActivity {
+
+
+    TextView tvTitle ;
+    EditText etWifi;   // wifi  账号
+    EditText etWifiPass;  // wifi 密码
+    Button btnCon; // 连接
+
+    WifiUtils wifiUtils;  // wifi 工具类
+
+    xEspTouchTask espTouchTask;
+
+    Dialog myDialog;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // 初始化布局
+        init();
+        intDate();
+    }
+
+    private void intDate() {
+        tvTitle.setText("乐鑫配网");
+        wifiUtils =new WifiUtils(this);
+
+            // 判断是否连接了wifi
+        if (wifiUtils.checkState()==1){
+
+            DialogUtils.showDialog(MainActivity.this,"手机请先连接WIFI","确定");
+
+        }
+        // 自动获取手机连接wifi的名字
+        etWifi.setText(wifiUtils.getWifiConnectedSsid());
+        // 弹窗
+        myDialog = DialogUtils.showProgressDialog(this);
+
+
+    }
+
+    private void init() {
+
+        tvTitle = findViewById(R.id.header_text);
+        etWifi = findViewById(R.id.etWifi);
+        etWifiPass = findViewById(R.id.etPass);
+        btnCon= findViewById(R.id.btnCon);
+
+    }
+
+    // 连接操作
+    public  void confirm(View v) {
+        String wifiName = etWifi.getText().toString().trim();
+        String wifiPassWord = etWifiPass.getText().toString().trim();
+
+
+        if (!TextUtils.isEmpty(wifiName) && !TextUtils.isEmpty(wifiPassWord) ) {
+
+            myDialog.show();
+            espTouchTask = new xEspTouchTask.Builder(this)
+                    .setSsid(wifiName) //设置路由器的名字
+                    .setPassWord(wifiPassWord)  //设置路由器连接的密码
+                    .creat(); //创建对象
+            espTouchTask.startSmartConfig();  //开始执行，不带UDP的普通配网
+            //  espTouchTask.startSmartConfig(30, 8989);  //开始执行带UDP协议的 一键配网，30是超时时间，8989是本地端口
+
+            //输入的结果回调
+            confirmResult();
+
+        }else {
+            Toast.makeText(this, "输入的信息不能为空", Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
+    private void confirmResult() {
+
+        espTouchTask.setEspTouchTaskListener(new xEspTouchTask.EspTouchTaskListener() {
+            @Override
+            public void EspTouchTaskCallback(int code, String message) {
+                switch (code) {
+                    case 0:
+
+                        myDialog.dismiss();
+
+
+                        showMessage("配网成功",message);
+
+                        break;
+                    case 1:
+
+                        //为多个配网信息，还在配网中，其中message是刚刚配对成功的设备
+                        Toast.makeText(MainActivity.this, ""+message, Toast.LENGTH_SHORT).show();
+
+                        break;
+                    case 2:
+
+                        myDialog.dismiss();
+                        showMessage("配网失败",message);
+
+                        break;
+                    case 3:
+
+                        myDialog.dismiss();
+
+                        //配网成功后，UDP广播后获取到的信息：message
+
+                        showMessage("配网成功",message);
+
+                        break;
+                    case 4:
+
+                        myDialog.dismiss();
+
+                        //表示超过了设置超时时间，未接受到设备的UDP信息
+
+                        showMessage("配网失败",message);
+
+                        break;
+                }
+            }
+        });
+    }
+
+
+    public  void   showMessage(String result, String message){
+
+        DialogUtils.showDialog(MainActivity.this,"  "+result+":  "+message,"确定");
+
+    }
+
+}

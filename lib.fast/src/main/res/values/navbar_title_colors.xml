@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="nbt_end_line">#00000000</color>
+    <color name="nbt_bgcolor">#00000000</color>
+    <color name="nbt_title_text_color">#FFF</color>
+    <color name="nbt_left_text_color">#FFF</color>
+    <color name="nbt_right_text_color">#FFF</color>
+    <color name="nbt_right_user_text_color">#FFF</color>
+</resources>

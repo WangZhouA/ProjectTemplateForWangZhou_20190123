@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="NavTitleBar">
+        <attr name="ntShowLeftIcon" format="boolean"/>
+        <attr name="ntShowTitle" format="boolean"/>
+        <attr name="ntShowRightUser" format="boolean"/>
+        <attr name="ntLeftIcon" format="reference"/>
+        <attr name="ntLeftText" format="string"/>
+        <attr name="ntLeftTextColor" format="color"/>
+        <attr name="ntLeftTextSize" format="dimension"/>
+        <attr name="ntRightIcon" format="reference"/>
+        <attr name="ntBackgroundColor" format="color"/>
+        <attr name="ntAutoSetStatusBarColor" format="boolean"/>
+        <attr name="ntTitleText" format="string"/>
+        <attr name="ntTitleTextColor" format="color"/>
+        <attr name="ntTitleTextSize" format="dimension"/>
+        <attr name="ntRightText" format="string"/>
+        <attr name="ntRightTxtColor" format="color"/>
+    </declare-styleable>
+
+</resources>

@@ -1,0 +1,67 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+    }
+
+    useLibrary 'org.apache.http.legacy'
+}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "com.android.support:support-v4:$rootProject.ext.supportLibraryVersion"
+    implementation "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+    //Android Jetpack Components
+    api "android.arch.lifecycle:viewmodel:$rootProject.jetpackComponentsVersion"
+    api "android.arch.lifecycle:extensions:$rootProject.jetpackComponentsVersion"
+    /**event bus 3.1.1*/
+    api 'org.greenrobot:eventbus:3.1.1'
+    /**retrofit2*/
+    api 'com.squareup.retrofit2:retrofit:2.4.0'
+    api 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    api 'com.squareup.retrofit2:converter-gson:2.4.0'
+    /**rxjava*/
+    api 'io.reactivex.rxjava2:rxjava:2.1.10'
+    /**rxandroid*/
+    api 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    /**rxpermission*/
+    compileOnly 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
+    /**multidex*/
+    api 'com.android.support:multidex:1.0.3'
+    /**okhttp*/
+    api 'com.squareup.okhttp3:okhttp:3.4.1'
+    api 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+    api "com.android.support:recyclerview-v7:$rootProject.ext.supportLibraryVersion"
+    //xlog
+    api 'com.elvishew:xlog:1.3.0'
+    //LeakCanary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+   // bugTags 测试工具
+    compileOnly 'com.bugtags.library:bugtags-lib:latest.integration'
+    // 可以当做一个imagview 自带点击放大功能，不得不说这个控件实在太强大了 , 不管是长图还是短图片只要记得   android:scaleType="centerCrop" 就好
+    api 'com.github.chrisbanes.photoview:library:1.2.4'
+//https://blog.csdn.net/analyzesystem/article/details/51426473
+    compileOnly 'com.github.tbruyelle:rxpermissions:0.10.2'
+    api 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+
+}

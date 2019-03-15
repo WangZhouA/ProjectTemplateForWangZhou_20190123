@@ -1,0 +1,118 @@
+﻿
+
+
+
+  
+
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/unbind_drawer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <include layout="@layout/activity_mian_first"></include>  // 主界面
+
+
+    <fragment
+        android:id="@+id/left_menu"
+        android:name="myapplication66.yanglh6.example.com.textactivity.MainLeftFragment"      // 侧滑的左边界面
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:tag="LEFT" />
+
+</android.support.v4.widget.DrawerLayout>
+
+
+
+
+
+
+public class MainActivity extends BaseActivity implements  DrawerLayout.DrawerListener{
+    DrawerLayout mDrawerLayout;
+    //左边布局
+    View mLeftMenuFragment;
+
+    @Override
+    protected void initView() {
+
+        setContentView(R.layout.activity_main);
+
+    }
+ 
+    @Override
+    protected void initData() {
+
+
+        //侧滑
+        mDrawerLayout = findViewById(R.id.unbind_drawer);
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.RIGHT);
+        mDrawerLayout.setDrawerListener(this);
+        Util.setDrawerLeftEdgeSize(this, mDrawerLayout, 0.1f);
+        mLeftMenuFragment = findViewById(R.id.left_menu);
+    }
+
+
+  
+    private long mExitTime;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            long currentTime = System.currentTimeMillis();
+            if (currentTime - mExitTime < 2000) {
+                MyApplication.getInstance().exit();
+            } else {
+                mExitTime = currentTime;
+                toast("再按一次退出程序");
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onDrawerSlide(View drawerView, float slideOffset) {
+        LogUtils.e("1");
+
+        View mContent = mDrawerLayout.getChildAt(0);
+        float scale = 1 - slideOffset;
+        if (drawerView.getTag().equals("LEFT")) {
+
+            float leftScale = 1 - 0.3f * scale;
+
+            ViewHelper.setScaleX(drawerView, leftScale);
+            ViewHelper.setScaleY(drawerView, leftScale);
+            ViewHelper.setTranslationX(mContent, drawerView.getMeasuredWidth()
+                    * (1 - scale));
+            ViewHelper.setPivotX(mContent, 0);
+        } else {
+            ViewHelper.setTranslationX(mContent, -drawerView.getMeasuredWidth()
+                    * slideOffset);
+            ViewHelper.setPivotX(mContent, mContent.getMeasuredWidth());
+        }
+        ViewHelper.setPivotY(mContent, mContent.getMeasuredHeight() / 2);
+        mContent.invalidate();
+
+
+    }
+
+    @Override
+    public void onDrawerOpened(View drawerView) {
+        /**
+         *  跟新写在这里
+         * */
+    }
+
+    @Override
+    public void onDrawerClosed(View drawerView) {
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
+                Gravity.RIGHT);
+    }
+
+    @Override
+    public void onDrawerStateChanged(int newState) {
+}
+      
+    }
+
+

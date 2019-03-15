@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- PermissionHelper start -->
+    <string name="permission_ok">OK</string>
+    <string name="permission_desc">Permission request instructions</string>
+    <string name="permission_desc_info">App operation needs the following permissions to ensure the normal use of the function, please grant the next permission application!</string>
+    <string name="permission_rejected">Permission denied</string>
+    <string name="permission_lacked_tips">The absence of related permissions for the App operation may affect the normal use of the function. Go to Settings</string>
+    <!-- end -->
+
+</resources>
+

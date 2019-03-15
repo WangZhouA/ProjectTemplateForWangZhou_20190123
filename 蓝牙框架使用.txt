@@ -1,0 +1,156 @@
+package saiyi.com.smartfields.ui;
+
+import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageView;
+
+import com.inuker.bluetooth.library.search.SearchResult;
+import com.inuker.bluetooth.library.search.response.SearchResponse;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.OnClick;
+import saiyi.com.smartfields.MyService;
+import saiyi.com.smartfields.R;
+import saiyi.com.smartfields.adapter.DerviceAdapter;
+import saiyi.com.smartfields.base.BaseActivity;
+import saiyi.com.smartfields.ble.BleBean;
+import saiyi.com.smartfields.ble.BleManger;
+import saiyi.com.smartfields.ble.BleUtils;
+import saiyi.com.smartfields.constaint.MyConstaints;
+import saiyi.com.smartfields.myinterface.IonMacLinsteners;
+import saiyi.com.smartfields.utils.DialogListener;
+import saiyi.com.smartfields.utils.DialogUtils;
+import saiyi.com.smartfields.utils.LogUtils;
+
+/**
+ * Created by 王洲 on 2018/8/10.
+ */
+public class SearchActivity extends BaseActivity implements IonMacLinsteners ,View.OnClickListener{
+
+    @BindView(R.id.recycle_ble)
+    RecyclerView recyclerView;
+
+    List<BleBean> dataBeanList = new ArrayList<>();
+    DerviceAdapter adapter;
+
+    @BindView(R.id.im_refresh)
+    ImageView im_refresh;
+
+
+    @Override
+    protected void initView() {
+        setContentView(R.layout.activity_search_ble);
+    }
+    Intent intentService;
+    @Override
+    protected void initData() {
+
+        showNormeBar();
+
+         intentService =new Intent(SearchActivity.this, MyService.class);
+         startService(intentService);
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new DerviceAdapter(this);
+        adapter.setIonMacLinsteners(this);
+        recyclerView.setAdapter(adapter);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        searchBle();
+    }
+    boolean isSearch = false;
+
+    void searchBle() {
+        BleManger.getInstance().startSearch(new SearchResponse() {
+            @Override
+            public void onSearchStarted() {
+                isSearch = true;
+            }
+
+            @Override
+            public void onDeviceFounded(SearchResult device) {
+                BleBean bleBean;
+                if (device.getName().   equals("NULL")) {
+                    bleBean = new BleBean(device.getAddress(), device.getAddress());
+                    LogUtils.e("===>"+bleBean.getName()+"=="+bleBean.getAddress());
+                } else {
+                    bleBean = new BleBean(device.getName(), device.getAddress());
+                    LogUtils.e("===>"+bleBean.getName()+"=="+bleBean.getAddress());
+                }
+
+                if (!BleUtils.getIntent().isContains(dataBeanList, bleBean)) {
+
+                        dataBeanList.add(bleBean);
+
+                }
+
+                adapter.updataAdapter(dataBeanList);
+
+            }
+
+            @Override
+            public void onSearchStopped() {
+
+            }
+
+            @Override
+            public void onSearchCanceled() {
+
+            }
+        });
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(intentService);
+    }
+
+    Intent intent ;
+    @Override
+    public void macLinstener(final String name, final String mac) {
+
+
+
+        DialogUtils.showIsOkDialog(this,"确定", "取消",
+                "是否需要连接蓝牙？",name , new DialogListener() {
+                    @Override
+                    public void onComplete() {
+
+                        //确定
+                        // 用户选择了一个mac地址，现在停止扫描并且发动连接
+                        BleManger.getInstance().stopSearch();
+                        intent= new Intent(MyConstaints.CONNTION);
+                        intent.putExtra(MyConstaints.CONNTION,mac);
+                        intent.putExtra(MyConstaints.NAME,name);
+                        sendBroadcast(intent);
+                        change(SearchingActivity.class,SearchActivity.this,new Intent(),false);
+                    }
+
+                    @Override
+                    public void onFail() {
+
+                    }
+                });
+
+    }
+
+    @OnClick(R.id.im_refresh)
+    @Override
+    public void onClick(View view) {
+        dataBeanList.clear();
+        searchBle();
+
+    }
+}

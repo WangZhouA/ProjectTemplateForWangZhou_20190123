@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--http error-->
+    <string name="UNKNOW">Unknown exception</string>
+    <string name="PARSE_ERROR">Data analysis exception</string>
+    <string name="NETWORD_ERROR">Network connection is abnormal</string>
+    <string name="HTTP_ERROR">Request exception</string>
+    <string name="SSL_ERROR">Https authentication exception</string>
+    <string name="PARAMS_ERROR">Parameter error</string>
+    <string name="SMS_IDENTIFY_ERROR">Verification code extraction failed</string>
+    <string name="SERVICE_RESULT_ERROR">Server returned error</string>
+    <string name="UNKNOW_HOST_ERROR">No server found</string>
+    <string name="SERVICE_ERROR">Server exception</string>
+
+
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- PermissionHelper start -->
+    <string name="permission_ok">好的</string>
+    <string name="permission_desc">权限申请说明</string>
+    <string name="permission_desc_info">App运行需要如下权限才能保证功能的正常使用,请授予接下来的权限申请!</string>
+    <string name="permission_rejected">权限被拒绝</string>
+    <!-- end -->
+
+</resources>

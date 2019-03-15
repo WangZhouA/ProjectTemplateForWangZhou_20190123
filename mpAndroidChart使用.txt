@@ -1,0 +1,189 @@
+package saiyi.com.jianceyi.mpAndroidChart;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
+
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import saiyi.com.jianceyi.R;
+
+
+/**
+ * Created by 王洲 on 2018/7/24.
+ */
+public class WZ_lineChartCopy {
+
+
+    public  static WZ_lineChartCopy instance ;
+
+    private WZ_lineChartCopy(){}
+    public static WZ_lineChartCopy getInstance(){
+        if (instance == null) {
+            instance = new WZ_lineChartCopy();
+        }
+        return instance;
+    }
+
+
+
+
+    public static void initChartView(LineChart mChart, final String[] valuesNew) {
+
+
+        mChart.invalidate();
+
+        //启用/禁用缩放图表上的两个轴
+        mChart.setScaleEnabled(false);
+        //是否可以缩放
+        mChart.setScaleEnabled(false);
+        mChart.setDragEnabled(true);
+        //集双指缩放
+        mChart.setPinchZoom(false);
+        //设置是否可以触摸
+        mChart.setTouchEnabled(true);
+        mChart.setDragDecelerationFrictionCoef(0.9f);
+
+
+        mChart.setViewPortOffsets(100, 0, 50, 100);
+        mChart.setDragOffsetX(30);
+        //设置一个描述的文本出现在右下角的图
+        mChart.setDescription(null);
+        //隐藏图例
+        mChart.getLegend().setEnabled(false);
+        //设置X轴
+        XAxis xAxis = mChart.getXAxis();
+        //设置X轴的位置
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+//        xAxis.setTextColor(Color.parseColor("#FF0000"));
+//
+        xAxis.setLabelCount(12);
+        xAxis.setTextSize(11f);
+        xAxis.setDrawGridLines(false);//设置x轴上每个点对应的线
+        xAxis.setDrawLabels(true);//绘制标签  指x轴上的对应数值
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//设置x轴的显示位置
+
+        //设置标签个数以及是否精确（false为模糊，true为精确）
+        //如果设置为true，此轴将被反转，这意味着最高值将在底部，最低的顶部值。
+        xAxis.setGranularityEnabled(false);
+        xAxis.setGranularity(1f);//禁止放大后x轴标签重绘
+
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                int index = (int) value;
+                if (index < 0 || index >= valuesNew.length) {
+                    return "";
+                } else {
+                    return valuesNew[index];
+                }
+            }
+        });
+
+
+        YAxis yAxisLeft = mChart.getAxisLeft();
+        yAxisLeft.setDrawAxisLine(false);
+        yAxisLeft.setLabelCount(6);
+        yAxisLeft.setYOffset(5);
+
+
+        YAxis yAxisRight=mChart.getAxisRight();
+        yAxisRight.setDrawAxisLine(false);
+        yAxisRight.setDrawLabels(false);
+        yAxisRight.setDrawGridLines(false);
+        yAxisRight.setTextSize(11);
+
+
+
+
+        //保证Y轴从0开始，不然会上移一点
+        mChart.setVisibleXRangeMinimum(1)  ; //x轴可显示的坐标范围
+        mChart.animateY(2000, Easing.EasingOption.Linear);
+        mChart.animateX(2000, Easing.EasingOption.Linear);
+
+        mChart.invalidate();
+        mChart.notifyDataSetChanged();
+        mChart.getLegend().setEnabled(false);
+    }
+
+
+    public static   void initDataDan(ArrayList<Entry> values1 , Context context, LineChart mChart , int color_wz ) {
+//        String  []  httpResultTimeArray={"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"};
+//        initChartView(mChart,httpResultTimeArray);
+        // 添加折线
+        List<ILineDataSet> dataSets = new ArrayList<>();
+
+
+
+        //如果要 画多条线，在之力 直接new LineDataSet
+        LineDataSet lineDataSet = new LineDataSet(values1, "");
+        lineDataSet.setLineWidth(2f);
+        // 在这里控制画不画节点和数值
+        lineDataSet.setDrawCircleHole(false);
+        lineDataSet.setDrawCircles(false);
+        lineDataSet.setDrawValues(false);
+        lineDataSet.setDrawFilled(false);
+
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+
+
+        //用y轴的集合来设置参数
+        lineDataSet.setLineWidth(2.5f); // 线宽
+        lineDataSet.setCircleSize(4f);// 显示的圆形大小
+        lineDataSet.setColor(color_wz);// 折线显示颜色
+        lineDataSet.setCircleColor(color_wz);// 圆形折点的颜色
+        lineDataSet.setHighLightColor(Color.YELLOW); // 高亮的线的颜色
+        lineDataSet.setHighlightEnabled(true);
+        lineDataSet.setValueTextColor(color_wz); //数值显示的颜色
+        lineDataSet.setValueTextSize(10f);     //数值显示的大小
+        lineDataSet.setDrawHorizontalHighlightIndicator(true);
+
+
+        dataSets.add(lineDataSet);
+        // 绘制折线
+        LineData data = new LineData(dataSets);
+        mChart.setData(data);
+
+
+
+      //设置一页最大显示个数为10，超出部分就滑动
+        float ratio = (float) values1.size()/(float)10;
+        //显示的时候是按照多大的比率缩放显示,1f表示不放大缩小
+        float scaleX = mChart.getScaleX();
+        Log.e("scaleX",scaleX+"");
+        if (scaleX == 1) {
+            mChart.zoom(ratio,1f,0,0);
+        }else {
+            mChart.zoom(1f,1f,0,0);
+        }
+        if (Utils.getSDKInt() >= 18) {
+            // fill drawable only supported on api level 18 and above
+            Drawable drawable = ContextCompat.getDrawable(context, R.drawable.fade_red);
+            lineDataSet.setFillDrawable(drawable);
+        }
+        else {
+            lineDataSet.setFillColor(Color.BLACK);
+        }
+        lineDataSet.setDrawFilled(true);
+
+        mChart.invalidate();
+        mChart.notifyDataSetChanged();
+
+
+    }
+}
